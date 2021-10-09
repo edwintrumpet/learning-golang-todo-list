@@ -8,6 +8,18 @@ type task struct {
 	completed   bool
 }
 
+type taskList struct {
+	tasks []*task
+}
+
+func (l *taskList) addToList(t *task) {
+	l.tasks = append(l.tasks, t)
+}
+
+func (l *taskList) removeFromList(index int) {
+	l.tasks = append(l.tasks[:index], l.tasks[index+1:]...)
+}
+
 func (t *task) complete() {
 	t.completed = true
 }
@@ -21,16 +33,39 @@ func (t *task) setName(name string) {
 }
 
 func main() {
-	t := task{
-		name:        "complete my go course",
-		description: "I must to complete it tomorrow",
+	list := taskList{}
+
+	list.addToList(&task{
+		name:        "Hacer el curso de algoritmos y pensamiento lógico",
+		description: "Este curso lo tomé recientemente",
+	})
+
+	list.addToList(&task{
+		name:        "Hacer el curso gratis de programación básica",
+		description: "Este curso lo tomé hace tiempo",
+	})
+
+	list.addToList(&task{
+		name:        "Hacer el curso de introducción al desarrollo backend",
+		description: "Este curso lo tomé hace tiempo",
+	})
+
+	list.addToList(&task{
+		name:        "Hacer el curso de introducción a la terminal y línea de comandos",
+		description: "Este curso lo tomé hace poco, pero es interesante",
+	})
+
+	fmt.Println("amount of tasks", len(list.tasks))
+
+	for _, currentTask := range list.tasks {
+		fmt.Printf("%+v\n", *currentTask)
 	}
 
-	fmt.Printf("task: %+v\n", t)
+	list.removeFromList(1)
 
-	t.setName("completar mi curso de Go")
-	t.setDescription("debo completarlo mañana")
-	t.complete()
+	fmt.Println("amount of tasks", len(list.tasks))
 
-	fmt.Printf("task: %+v\n", t)
+	for _, currentTask := range list.tasks {
+		fmt.Printf("%+v\n", *currentTask)
+	}
 }
